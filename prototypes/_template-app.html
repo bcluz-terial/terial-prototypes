@@ -3,11 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Built from _template-app.html (app-shell template). Chrome is
-       vendored from George's canon — do not modify beyond nav active
-       states. Concept: lead staging layer (Ledger: Leads/company
-       split view). Rebuilt in-shell 2026-07-02. -->
-  <title>Terial Prototype — Lead Staging Layer</title>
+  <!-- ============================================================
+       _template-app.html — APP-SHELL prototype template.
+       DEFAULT for product-screen concepts: the concept renders
+       inside the full Terial app chrome (dark sidebar + topbar +
+       omnisearch), vendored from George's canon at
+       h12312315.github.io/terial-ai (see appshell.css/appshell.js,
+       vendored 2026-07-02).
+       _template.html remains the template for standalone NON-screen
+       concepts (flows, architecture diagrams, card-style pages).
+       Persona: RoofCo demo environment (Terial's own demo customer).
+       Uses ../appshell.css instead of ../workspace.css — the
+       mandatory .proto-banner style is copied into appshell.css.
+       ============================================================ -->
+  <!-- TITLE: {Feature name} -->
+  <title>Terial Prototype — App Shell Template</title>
   <link rel="stylesheet" href="../terial-tokens.css" />
   <link rel="stylesheet" href="../appshell.css" />
   <script src="../appshell.js" defer></script>
@@ -37,7 +47,7 @@
     </div>
 
     <nav class="app-nav">
-      <div class="nav-row">
+      <div class="nav-row is-section-active">
         <span class="icon"><svg viewBox="0 0 16 16"><path d="M2 7l6-5 6 5v7a1 1 0 0 1-1 1h-3v-5H6v5H3a1 1 0 0 1-1-1z"/></svg></span>
         Home
       </div>
@@ -48,13 +58,12 @@
         <span class="caret">▾</span>
       </div>
 
-      <div class="nav-row is-section-active" id="nav-crm-toggle">
+      <div class="nav-row" id="nav-crm-toggle">
         <span class="icon"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="3"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg></span>
         CRM
-        <span class="caret" id="crm-caret">▴</span>
+        <span class="caret" id="crm-caret">▾</span>
       </div>
-      <div class="nav-children" id="nav-crm-children">
-        <div class="nav-child is-active">Leads</div>
+      <div class="nav-children" id="nav-crm-children" style="display:none;">
         <div class="nav-child">Opportunities</div>
         <div class="nav-child">Proposals</div>
         <div class="nav-child">Tasks</div>
@@ -517,26 +526,16 @@
       <!-- Provenance block: ties the prototype back to the Product
            Feedback Ledger entry it visualizes. Fill all three. -->
       <div class="proto-meta">
-        Ledger entry: Leads/company split view (parent company + separate child leads object) (Unclassified · HIGH) ·
-        Sources: 2 accounts ·
-        Drafted: 2026-07-02 by Brian ·
-        <a href="https://app.notion.com/p/36a6517f62da81c68347d7e34c98f6e0" target="_blank" rel="noopener">Ledger row ↗</a>
+        Ledger entry: {gap title} ({Blocker | Theme | Idea}) ·
+        Sources: {N accounts} ·
+        Drafted: {YYYY-MM-DD} by Brian ·
+        <a href="#">Ledger row ↗</a>
       </div>
 
-      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm);">
-        <div>
-          <h1 class="t-h3">Leads</h1>
-          <p class="t-body-md" style="color: var(--color-text-tertiary); max-width: 640px;">
-            "A place for a prospect to live before it's a client." Staged prospects are routed by
-            territory, worked through dispositions, and promoted into the CRM only once qualified
-            and deduped.
-          </p>
-        </div>
-        <div style="display: flex; gap: var(--space-sm);">
-          <button class="btn btn-secondary">Import list</button>
-          <button class="btn btn-primary">+ New Lead</button>
-        </div>
-      </div>
+      <h1 class="t-h3">{Feature name}</h1>
+      <p class="t-body-md" style="color: var(--color-text-tertiary); max-width: 640px;">
+        {One-sentence problem statement in the buyer's words — what this concept solves.}
+      </p>
 
       <!-- ========================================================
            CONCEPT AREA — replace everything below with the mockup.
@@ -545,68 +544,24 @@
            vanilla JS inline only, no libraries, no build step.
            ======================================================== -->
 
-      <!-- Lead queue — the staging surface -->
       <div class="card card-padded" style="margin-top: var(--space-2xl);">
-        <div class="tab-box" style="margin-bottom: var(--space-xl);">
-          <button class="tab-box-item is-active" onclick="queue(this,'newq')">New (14)</button>
-          <button class="tab-box-item" onclick="queue(this,'working')">Working (32)</button>
-          <button class="tab-box-item" onclick="queue(this,'qualified')">Qualified (6)</button>
-          <button class="tab-box-item" onclick="queue(this,'disqualified')">Disqualified</button>
+        <div class="tabs" style="margin-bottom: var(--space-2xl);">
+          <button class="tab is-active" onclick="pick(this)">View A</button>
+          <button class="tab" onclick="pick(this)">View B</button>
         </div>
 
         <table class="table">
-          <thead><tr><th>Lead</th><th>Territory</th><th>Tier</th><th>Source</th><th>Owner</th><th>Disposition</th><th></th></tr></thead>
-          <tbody id="rows"></tbody>
-        </table>
-
-        <p class="t-body-sm" style="color: var(--color-text-tertiary); margin: var(--space-xl) 0 0;">
-          Routing (schematic): new leads auto-assign by territory; tier rules gate who can work
-          what — e.g. top-tier targets route to senior reps, not the BD queue.
-        </p>
-      </div>
-
-      <!-- Promote flow — the dedup gate. Hidden until a Promote button is clicked. -->
-      <div class="card card-padded" id="promoteCard" style="margin-top: var(--space-2xl); display: none; background: var(--color-info-bg); border-color: var(--color-info-fg);">
-        <div class="t-h5" style="margin-bottom: var(--space-sm);">Promote to CRM — dedup check</div>
-        <p class="t-body-md" style="margin: 0 0 var(--space-xl);">
-          Promoting <strong id="promoteName">—</strong>. One possible match found before anything
-          touches the CRM:
-        </p>
-        <table class="table" style="margin-bottom: var(--space-xl);">
-          <thead><tr><th>Possible match</th><th>Why flagged</th><th>Existing record</th></tr></thead>
+          <thead><tr><th>Item</th><th>Detail</th><th>Status</th></tr></thead>
           <tbody>
-            <tr>
-              <td>Riverton Office Campus LLC</td>
-              <td>Same street address · similar name</td>
-              <td><span class="badge badge-blue"><span>CRM company since 2024</span></span></td>
-            </tr>
+            <tr><td>Example row</td><td>Replace with concept content</td><td><span class="badge badge-green"><span>Active</span></span></td></tr>
+            <tr><td>Example row</td><td>Replace with concept content</td><td><span class="badge badge-orange"><span>Pending</span></span></td></tr>
           </tbody>
         </table>
-        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
-          <button class="btn btn-primary" onclick="closePromote()">Merge into existing company</button>
-          <button class="btn btn-secondary" onclick="closePromote()">Create new company + opportunity</button>
-          <button class="btn btn-ghost" onclick="closePromote()">Cancel</button>
-        </div>
-      </div>
 
-      <!-- How it fits — one-line schematic flow -->
-      <div class="card card-padded" style="margin-top: var(--space-2xl);">
-        <div class="t-h5" style="margin-bottom: var(--space-lg);">How it fits</div>
-        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm);">
-          <span class="badge badge-gray"><span>List import / referral / call-in</span></span>
-          <span class="t-body-md" style="color: var(--color-text-tertiary);">→</span>
-          <span class="badge badge-orange"><span>Lead queue (staging)</span></span>
-          <span class="t-body-md" style="color: var(--color-text-tertiary);">→</span>
-          <span class="badge badge-orange"><span>BD dispositions</span></span>
-          <span class="t-body-md" style="color: var(--color-text-tertiary);">→</span>
-          <span class="badge badge-blue"><span>Dedup gate</span></span>
-          <span class="t-body-md" style="color: var(--color-text-tertiary);">→</span>
-          <span class="badge badge-green"><span>CRM company + opportunity</span></span>
+        <div style="margin-top: var(--space-2xl); display: flex; gap: var(--space-sm);">
+          <button class="btn btn-primary">Primary action</button>
+          <button class="btn btn-secondary">Secondary</button>
         </div>
-        <p class="t-body-sm" style="color: var(--color-text-tertiary); margin: var(--space-xl) 0 0;">
-          The CRM stays clean: nothing becomes a company until it passes the gate. Disqualified
-          leads keep history in staging instead of polluting the book.
-        </p>
       </div>
 
       <!-- Open questions for product — keep this section. It's the
@@ -614,13 +569,7 @@
       <div class="card card-padded" style="margin-top: var(--space-2xl); background: var(--color-info-bg); border-color: var(--color-info-fg);">
         <div class="t-h5" style="margin-bottom: var(--space-sm);">Open questions</div>
         <p class="t-body-md" style="margin: 0;">
-          1. Build vs. integrate — native lead object, or sales-engagement tool via the public API
-          with Terial as system of record? ·
-          2. Placement — Leads under CRM as shown, or a top-level area? ·
-          3. Smallest version — flat staged list + dedup gate on promote, with territory/tier
-          routing as a fast follow? ·
-          4. Does import-time dedup gating ship with this or stand alone (it also protects direct
-          CRM imports)?
+          1. {Scope question} · 2. {Placement question} · 3. {Smallest-version question}
         </p>
       </div>
 
@@ -628,54 +577,11 @@
   </main>
 
   <script>
-    // Concept-area behavior only (chrome behavior lives in ../appshell.js)
-    var DATA = {
-      newq: [
-        ["Lakeside Distribution Center", "North", "T3", "List import", "Unassigned", '<span class="badge badge-blue"><span>New</span></span>', ""],
-        ["Harborview Medical Plaza", "East", "T2", "Referral", "Routed: senior rep", '<span class="badge badge-gray"><span>Tier-gated</span></span>', ""],
-        ["Millbrook Industrial Park", "West", "T4", "List import", "Unassigned", '<span class="badge badge-blue"><span>New</span></span>', ""]
-      ],
-      working: [
-        ["Summit Business Park", "North", "T3", "List import", "D. Reyes", '<span class="badge badge-orange"><span>Contacted · 2 touches</span></span>', ""],
-        ["Cedar Ridge Logistics", "West", "T4", "Cold call", "M. Chen", '<span class="badge badge-orange"><span>Callback 7/10</span></span>', ""],
-        ["Fairview Retail Plaza", "East", "T3", "Referral", "D. Reyes", '<span class="badge badge-orange"><span>Left voicemail</span></span>', ""]
-      ],
-      qualified: [
-        ["Riverton Office Campus", "East", "T3", "Referral", "D. Reyes", '<span class="badge badge-green"><span>Qualified</span></span>', '<button class="btn btn-primary btn-sm" onclick="promote(\'Riverton Office Campus\')">Promote to CRM</button>'],
-        ["Stonebridge Corporate Center", "North", "T2", "Event", "Senior rep", '<span class="badge badge-green"><span>Qualified</span></span>', '<button class="btn btn-primary btn-sm" onclick="promote(\'Stonebridge Corporate Center\')">Promote to CRM</button>']
-      ],
-      disqualified: [
-        ["Pinehurst Strip Mall", "West", "T4", "List import", "M. Chen", '<span class="badge badge-red"><span>Disqualified · out of footprint</span></span>', ""]
-      ]
-    };
-
-    function render(key) {
-      var tbody = document.getElementById("rows");
-      tbody.innerHTML = DATA[key].map(function (r) {
-        return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + "</td><td>" +
-          r[3] + "</td><td>" + r[4] + "</td><td>" + r[5] + "</td><td>" + r[6] + "</td></tr>";
-      }).join("");
-    }
-
-    function queue(el, key) {
-      el.parentElement.querySelectorAll(".tab-box-item").forEach(function (t) { t.classList.remove("is-active"); });
+    // Concept-area helper only (chrome behavior lives in ../appshell.js)
+    function pick(el) {
+      el.parentElement.querySelectorAll(".tab").forEach(t => t.classList.remove("is-active"));
       el.classList.add("is-active");
-      closePromote();
-      render(key);
     }
-
-    function promote(name) {
-      document.getElementById("promoteName").textContent = name;
-      var card = document.getElementById("promoteCard");
-      card.style.display = "block";
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
-    function closePromote() {
-      document.getElementById("promoteCard").style.display = "none";
-    }
-
-    render("newq");
   </script>
 </body>
 </html>

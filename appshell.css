@@ -1,0 +1,611 @@
+/* ============================================================
+   appshell.css — Terial app chrome (sidebar + topbar + omnisearch)
+   VENDORED from h12312315.github.io/terial-ai (George's canon).
+   Source pages: prototypes/crm-ai-1.html + prototypes/bi/bi-4.html
+   (chrome CSS is inline and identical in both; this is the
+   bi-4 variant, which adds position:relative to .app-content).
+   Vendored: 2026-07-02. NEVER EDIT LOCALLY — re-vendor from
+   source instead. Depends on terial-tokens.css variables.
+   Local additions (clearly marked) at the bottom of this file:
+   .proto-banner / .proto-meta copied from workspace.css so
+   app-shell pages do not need workspace.css.
+   ============================================================ */
+
+html, body { height: 100%; }
+body {
+  display: flex;
+  overflow: hidden;
+  background: var(--color-bg-page);
+}
+
+/* ---------- App sidebar (dark) ---------- */
+.app-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--color-gray-8); /* #272c4c */
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.app-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px var(--space-2xl) 18px var(--space-2xl);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.app-brand .mark {
+  display: flex; align-items: center; gap: 10px;
+}
+.app-brand .mark .glyph {
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  background: var(--color-primary-6);
+  color: var(--color-gray-9);
+  font-weight: 800;
+  font-size: 14px;
+  border-radius: 6px;
+  box-shadow: var(--shadow-sm);
+}
+.app-brand .name {
+  font-size: var(--font-body-xl-semi-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+}
+.app-brand .collapse {
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  background: none; border: none;
+  cursor: pointer;
+}
+
+.app-nav {
+  flex: 1;
+  padding: var(--space-lg) 0 var(--space-lg) 0;
+  overflow-y: auto;
+}
+.nav-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: 10px var(--space-2xl);
+  color: rgba(255,255,255,0.85);
+  font-size: var(--font-body-md-size);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  user-select: none;
+}
+.nav-row:hover { background: rgba(255,255,255,0.04); }
+.nav-row .icon { width: 16px; height: 16px; opacity: 0.85; flex-shrink: 0; display: grid; place-items: center; }
+.nav-row .icon svg { width: 16px; height: 16px; display: block; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.nav-row .caret { margin-left: auto; opacity: 0.5; font-size: 10px; }
+
+.nav-row.is-section-active {
+  color: var(--color-primary-6);
+}
+.nav-row.is-section-active .icon { opacity: 1; }
+
+.nav-children { padding-bottom: 6px; }
+.nav-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px var(--space-2xl) 8px 52px;
+  color: rgba(255,255,255,0.7);
+  font-size: var(--font-body-md-size);
+  cursor: pointer;
+}
+.nav-child::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+.nav-child:hover { color: var(--color-white); }
+.nav-child.is-active {
+  color: var(--color-white);
+}
+.nav-child.is-active::before {
+  background: var(--color-primary-6);
+}
+
+.app-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-2xl);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: var(--color-white);
+  font-size: var(--font-body-md-size);
+}
+.app-user .avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--color-gray-6);
+  display: grid; place-items: center;
+  color: var(--color-white);
+  font-size: 11px;
+}
+
+/* ---------- App main ---------- */
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+  position: relative;
+}
+
+/* ---------- Top bar ---------- */
+.app-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xl);
+  padding: var(--space-lg) var(--space-2xl);
+  background: var(--color-gray-2);
+  border-bottom: 1px solid var(--color-border-default);
+}
+.top-search {
+  flex: 1;
+  max-width: none;
+  position: relative;
+}
+.top-search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  font-family: var(--font-family-base);
+  font-size: var(--font-body-md-size);
+  color: var(--color-text-primary);
+  outline: none;
+}
+.top-search input::placeholder { color: var(--color-gray-5); }
+.top-search .search-icon {
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  width: 14px; height: 14px;
+  color: var(--color-gray-5);
+}
+.top-search .search-clear {
+  display: none;
+  position: absolute;
+  left: 10px; top: 50%;
+  transform: translateY(-50%);
+  width: 18px; height: 18px;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--color-gray-7);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+}
+.top-search.is-active .search-icon { display: none; }
+.top-search.is-active .search-clear { display: inline-flex; }
+
+/* ---------- Omnisearch dropdown ---------- */
+.omnisearch-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 720px;
+  max-width: calc(100vw - 340px);
+  background: var(--color-white);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  max-height: calc(100vh - 100px);
+  overflow: hidden;
+}
+.top-search.is-active .omnisearch-dropdown { display: flex; flex-direction: column; }
+.omnisearch-body { display: flex; flex: 1; min-height: 0; }
+.omni-recent-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border-default);
+  background: var(--color-gray-1);
+  max-height: 76px;
+  overflow: hidden;
+}
+.omni-recent-bar .omni-recent-label { flex-shrink: 0; }
+.top-search.omni-hide-recent .omni-recent-bar { display: none !important; }
+/* When search is empty, only show the recent bar, hide the body */
+.top-search.omni-only-recent .omnisearch-body { display: none !important; }
+.top-search.omni-only-recent .omni-recent-bar { border-bottom: none; }
+.omni-recent-label {
+  font-size: var(--font-body-sm-size);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  margin-right: 4px;
+}
+.omni-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+.omni-pill svg {
+  width: 11px; height: 11px;
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+}
+.omni-pill:hover { background: var(--color-gray-2); border-color: var(--color-gray-5); }
+
+/* No results state */
+.omni-no-results {
+  display: none;
+  padding: var(--space-xl) 0 var(--space-sm);
+  text-align: center;
+  font-size: var(--font-body-sm-size);
+  color: var(--color-text-secondary);
+}
+.omni-panel.is-empty .omni-no-results { display: block; }
+.omni-panel.is-empty .omni-item { display: none !important; }
+
+/* Suggested prompts ("Try:") */
+.omni-suggest-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border-default);
+}
+.omni-suggest-label {
+  font-size: var(--font-body-sm-size);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  margin-right: 4px;
+}
+.omni-suggest-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+.omni-suggest-pill svg {
+  width: 11px; height: 11px;
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+}
+.omni-suggest-pill:hover { background: var(--color-gray-1); border-color: var(--color-gray-5); }
+
+.omnisearch-tabs {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--color-gray-1);
+  border-right: 1px solid var(--color-border-default);
+  padding: 6px 0;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+.omnisearch-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  font-family: var(--font-family-base);
+  font-size: var(--font-body-md-size);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.omnisearch-tab svg {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  color: var(--color-gray-6);
+}
+.omnisearch-tab.is-active svg { color: var(--color-text-primary); }
+.omnisearch-tab:hover { color: var(--color-text-primary); background: var(--color-gray-2); }
+.omnisearch-tab.is-active {
+  background: var(--color-primary-1, #fef9e7);
+  color: var(--color-text-primary);
+  border-left-color: var(--color-primary-6);
+  font-weight: var(--font-weight-semibold);
+}
+.omnisearch-tab.is-disabled {
+  color: var(--color-gray-5);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.omnisearch-tab.is-disabled:hover { background: none; color: var(--color-gray-5); }
+
+.omni-empty {
+  display: none;
+  padding: var(--space-xl) var(--space-sm);
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-body-sm-size);
+}
+
+/* Loading state */
+.omni-loading {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl, 40px) var(--space-xl);
+  gap: var(--space-md);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-body-sm-size);
+}
+.omnisearch-panels.is-loading .omni-loading { display: flex; }
+.omnisearch-panels.is-loading .omni-panel { display: none !important; }
+.omni-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-gray-3);
+  border-top-color: var(--color-primary-6);
+  border-radius: 50%;
+  animation: omni-spin 0.8s linear infinite;
+}
+@keyframes omni-spin {
+  to { transform: rotate(360deg); }
+}
+
+.omnisearch-panels {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-lg);
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+.omni-panel { display: none; }
+.omni-panel.is-active { display: block; }
+
+.omni-searched-for {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  margin-bottom: 2px;
+}
+.omni-searched-for .omni-query {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+.omni-header-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: 4px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border-default);
+}
+.omni-col-header {
+  flex: 1;
+  font-size: var(--font-body-md-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.omni-col-header .view-all {
+  font-weight: var(--font-weight-regular);
+  color: var(--color-primary-7);
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.omni-col-header .view-all:hover { text-decoration: underline; }
+.omni-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-body-sm-size);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  padding: 5px 10px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.omni-new:hover { background: var(--color-gray-1); text-decoration: none; }
+.omni-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin: 2px -6px;
+}
+.omni-item:hover { background: var(--color-gray-1); }
+.omni-item-body { flex: 1; min-width: 0; }
+.omni-item .omni-chevron {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  color: var(--color-gray-5);
+}
+.omni-item .omni-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 2px;
+}
+.omni-item .omni-title .omni-icon {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+/* Help section: wraps Ask Terial CTA + Try prompts */
+.omni-help-section {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-gray-1);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+}
+.omni-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 4px 0;
+  font-size: var(--font-body-sm-size);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  text-decoration: none;
+}
+.omni-cta:hover { color: var(--color-primary-7); }
+.omni-cta .omni-cta-text { flex: 1; }
+.omni-cta .omni-cta-lead {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  color: var(--color-primary-6);
+}
+.omni-cta .omni-cta-icon {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  color: var(--color-gray-6);
+}
+.omni-item .omni-title .omni-meta-inline {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: var(--font-weight-regular);
+}
+.omni-item .omni-sub {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  line-height: 1.35;
+}
+
+/* Recent keywords */
+.omni-recent-title {
+  font-size: var(--font-body-md-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border-default);
+}
+.omni-keyword {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin: 2px -6px;
+  font-size: var(--font-body-sm-size);
+  color: var(--color-text-primary);
+}
+.omni-keyword:hover { background: var(--color-gray-1); }
+.omni-keyword .omni-kw-icon {
+  width: 13px; height: 13px;
+  color: var(--color-gray-5);
+  flex-shrink: 0;
+}
+.top-customer {
+  display: flex; align-items: center; gap: var(--space-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-9);
+  font-size: var(--font-body-md-size);
+}
+.top-customer .swatch {
+  width: 18px; height: 18px;
+  background: var(--color-green-7);
+  border-radius: 3px;
+  transform: rotate(45deg);
+}
+
+/* ---------- Content area ---------- */
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-2xl) var(--space-2xl) 80px var(--space-2xl);
+  position: relative;
+}
+
+/* ============================================================
+   LOCAL ADDITIONS — not from George's chrome.
+   .proto-banner / .proto-meta copied verbatim from workspace.css
+   (hard rule #150: banner on every prototype) then adapted:
+   the app shell body is display:flex row, so the banner is
+   position:fixed full-width and the shell is pushed down by
+   --appshell-banner-h. If workspace.css .proto-banner changes,
+   re-copy it here.
+   ============================================================ */
+
+:root { --appshell-banner-h: 34px; }
+
+body {
+  box-sizing: border-box;
+  padding-top: var(--appshell-banner-h);
+}
+
+.proto-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  height: var(--appshell-banner-h);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-2xl);
+  background: var(--color-warning-bg);
+  border-bottom: 1px solid var(--color-warning-fg);
+  color: var(--color-warning-fg);
+  font-size: var(--font-body-sm-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+}
+.proto-banner::before { content: "▲"; font-size: 10px; }
+
+/* Provenance line inside .app-content (copied from workspace.css
+   .proto-meta so app-shell pages don't need workspace.css) */
+.proto-meta {
+  margin-bottom: var(--space-2xl);
+  font-size: var(--font-body-sm-size);
+  color: var(--color-gray-5);
+}
+.proto-meta a { color: var(--color-blue-7); }
+
+/* Banner-height compensation: George's .app-sidebar and .app-main
+   are height:100vh; under the fixed banner they must be shorter or
+   the sidebar user footer / content bottom clip off-screen. */
+.app-sidebar,
+.app-main {
+  height: calc(100vh - var(--appshell-banner-h));
+}
