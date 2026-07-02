@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- TITLE: {Feature name} -->
+  <title>Terial Prototype — Template</title>
+  <link rel="stylesheet" href="../terial-tokens.css" />
+  <link rel="stylesheet" href="../workspace.css" />
+</head>
+<body>
+
+  <!-- MANDATORY on every prototype. Hard rule (#150): prevents a
+       concept sketch being read as committed scope. Do not remove. -->
+  <div class="proto-banner">PROTOTYPE — concept, not spec · not committed scope · for discussion only</div>
+
+  <div class="proto-page">
+
+    <!-- Provenance block: ties the prototype back to the Product
+         Feedback Ledger entry it visualizes. Fill all three. -->
+    <div class="proto-meta">
+      Ledger entry: {gap title} ({Blocker | Theme | Idea}) ·
+      Sources: {N accounts} ·
+      Drafted: {YYYY-MM-DD} by Brian ·
+      <a href="#">Ledger row ↗</a>
+    </div>
+
+    <h1 class="t-h3">{Feature name}</h1>
+    <p class="t-body-md" style="color: var(--color-text-tertiary); max-width: 640px;">
+      {One-sentence problem statement in the buyer's words — what this concept solves.}
+    </p>
+
+    <!-- ========================================================
+         CONCEPT AREA — replace everything below with the mockup.
+         Build from tokens classes: .card, .table, .badge, .btn,
+         .tabs, .input, .switch. Keep interactions schematic —
+         vanilla JS inline only, no libraries, no build step.
+         ======================================================== -->
+
+    <div class="card card-padded" style="margin-top: var(--space-2xl);">
+      <div class="tabs" style="margin-bottom: var(--space-2xl);">
+        <button class="tab is-active" onclick="pick(this)">View A</button>
+        <button class="tab" onclick="pick(this)">View B</button>
+      </div>
+
+      <table class="table">
+        <thead><tr><th>Item</th><th>Detail</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Example row</td><td>Replace with concept content</td><td><span class="badge badge-green"><span>Active</span></span></td></tr>
+          <tr><td>Example row</td><td>Replace with concept content</td><td><span class="badge badge-orange"><span>Pending</span></span></td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top: var(--space-2xl); display: flex; gap: var(--space-sm);">
+        <button class="btn btn-primary">Primary action</button>
+        <button class="btn btn-secondary">Secondary</button>
+      </div>
+    </div>
+
+    <!-- Open questions for product — keep this section. It's the
+         point of the artifact: invite reaction, not sign-off. -->
+    <div class="card card-padded" style="margin-top: var(--space-2xl); background: var(--color-info-bg); border-color: var(--color-info-fg);">
+      <div class="t-h5" style="margin-bottom: var(--space-sm);">Open questions</div>
+      <p class="t-body-md" style="margin: 0;">
+        1. {Scope question} · 2. {Placement question} · 3. {Smallest-version question}
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    function pick(el) {
+      el.parentElement.querySelectorAll(".tab").forEach(t => t.classList.remove("is-active"));
+      el.classList.add("is-active");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terial — Prototype Workspace</title>
+  <link rel="stylesheet" href="terial-tokens.css" />
+  <link rel="stylesheet" href="workspace.css" />
+</head>
+<body>
+  <div class="ws-layout">
+    <aside class="ws-sidebar">
+      <div class="ws-brand">
+        <span class="ws-brand-mark">T</span>
+        <span class="ws-brand-name">Terial <span>Prototypes</span></span>
+      </div>
+      <nav class="ws-nav" id="nav"></nav>
+      <div class="ws-footer">Brian Cluzet · GTM · v0.1</div>
+    </aside>
+    <main class="ws-main">
+      <div class="ws-topbar">
+        <div class="ws-crumb" id="crumb">Prototypes</div>
+        <a class="ws-open-tab" id="openTab" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
+      </div>
+      <iframe class="ws-frame" id="frame" title="Prototype view"></iframe>
+    </main>
+  </div>
+
+  <script>
+    /* ------------------------------------------------------------
+       NAV CONFIG — the product-prototype-builder skill (#150
+       Session 2) edits ONLY the block between the markers below:
+       adds { title, path } entries under the matching group,
+       creating the group if the Ledger category is new.
+       Group names mirror knowledge/Customer_Intelligence.md
+       § Product Gap Intelligence section headers.
+       ------------------------------------------------------------ */
+    /* NAV:START */
+    const NAV = [
+      { group: "Estimating & Proposals", items: [] },
+      { group: "Accounting & ERP", items: [] },
+      { group: "CRM & Sales Management", items: [] },
+      { group: "Production & PM", items: [] },
+      { group: "Field Workflows & Mobile", items: [] },
+      { group: "Scheduling & Dispatch", items: [] },
+      { group: "Reporting & Visibility", items: [] },
+      { group: "Customer-Facing & Compliance", items: [] },
+      { group: "Design system", items: [
+        { title: "Tokens & components", path: "design-system.html" },
+        { title: "Prototype template", path: "prototypes/_template.html" }
+      ]}
+    ];
+    /* NAV:END */
+
+    const DEFAULT_PAGE = "design-system.html";
+    const nav = document.getElementById("nav");
+    const frame = document.getElementById("frame");
+    const crumb = document.getElementById("crumb");
+    const openTab = document.getElementById("openTab");
+
+    function titleFor(path) {
+      for (const g of NAV) {
+        const hit = (g.items || []).find(i => i.path === path);
+        if (hit) return { group: g.group, title: hit.title };
+      }
+      return { group: "Prototypes", title: path };
+    }
+
+    function render() {
+      nav.innerHTML = "";
+      const current = location.hash.replace(/^#\//, "") || DEFAULT_PAGE;
+      NAV.forEach(g => {
+        const d = document.createElement("details");
+        const hasCurrent = (g.items || []).some(i => i.path === current);
+        d.open = hasCurrent || (g.items || []).length > 0;
+        const s = document.createElement("summary");
+        s.textContent = g.group;
+        d.appendChild(s);
+        if (!g.items || g.items.length === 0) {
+          const e = document.createElement("div");
+          e.className = "ws-nav-empty";
+          e.textContent = "none yet";
+          d.appendChild(e);
+        } else {
+          g.items.forEach(i => {
+            const a = document.createElement("a");
+            a.href = "#/" + i.path;
+            a.textContent = i.title;
+            if (i.path === current) a.className = "is-active";
+            d.appendChild(a);
+          });
+        }
+        nav.appendChild(d);
+      });
+    }
+
+    function load() {
+      const path = location.hash.replace(/^#\//, "") || DEFAULT_PAGE;
+      frame.src = path;
+      openTab.href = path;
+      const t = titleFor(path);
+      crumb.innerHTML = t.group + " / <strong>" + t.title + "</strong>";
+      render();
+    }
+
+    window.addEventListener("hashchange", load);
+    load();
+  </script>
+</body>
+</html>

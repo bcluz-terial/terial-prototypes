@@ -1,0 +1,140 @@
+/* ============================================================
+   Terial Prototype Workspace — shell + shared prototype chrome
+   (Layout only. All visual tokens come from terial-tokens.css.)
+   ============================================================ */
+
+/* ---------- Workspace shell (index.html) ---------- */
+.ws-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.ws-sidebar {
+  width: 248px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border-default);
+}
+
+.ws-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl);
+  border-bottom: 1px solid var(--color-border-default);
+}
+.ws-brand-mark {
+  width: 28px; height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-6);
+  color: var(--color-gray-9);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-semibold);
+  font-size: 15px;
+}
+.ws-brand-name { font-weight: var(--font-weight-semibold); font-size: var(--font-h5-size); }
+.ws-brand-name span { color: var(--color-gray-5); font-weight: var(--font-weight-regular); }
+
+.ws-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg) var(--space-sm);
+}
+.ws-nav details { margin-bottom: var(--space-xs); }
+.ws-nav summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-body-md-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  user-select: none;
+}
+.ws-nav summary::before { content: "▸ "; color: var(--color-gray-4); }
+.ws-nav details[open] > summary::before { content: "▾ "; }
+.ws-nav summary:hover { background: var(--color-gray-2); }
+.ws-nav a {
+  display: block;
+  padding: 5px 10px 5px 26px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-body-md-size);
+  color: var(--color-gray-6);
+  text-decoration: none;
+}
+.ws-nav a:hover { background: var(--color-gray-2); color: var(--color-text-primary); }
+.ws-nav a.is-active {
+  background: var(--color-primary-0);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+.ws-nav-empty {
+  padding: 5px 10px 5px 26px;
+  font-size: var(--font-body-sm-size);
+  color: var(--color-gray-4);
+  font-style: italic;
+}
+
+.ws-footer {
+  padding: var(--space-lg) var(--space-xl);
+  border-top: 1px solid var(--color-border-default);
+  font-size: var(--font-body-sm-size);
+  color: var(--color-gray-5);
+}
+
+.ws-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+.ws-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  padding: var(--space-lg) var(--space-2xl);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-default);
+}
+.ws-crumb { font-size: var(--font-body-md-size); color: var(--color-text-tertiary); }
+.ws-crumb strong { color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
+.ws-open-tab {
+  font-size: var(--font-body-sm-size);
+  color: var(--color-blue-7);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ws-open-tab:hover { text-decoration: underline; }
+
+.ws-frame { flex: 1; border: none; width: 100%; background: var(--color-bg-page); }
+
+/* ---------- Shared prototype chrome (every prototype page) ---------- */
+
+/* Mandatory banner — every prototype carries this. Hard rule (#150). */
+.proto-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-2xl);
+  background: var(--color-warning-bg);
+  border-bottom: 1px solid var(--color-warning-fg);
+  color: var(--color-warning-fg);
+  font-size: var(--font-body-sm-size);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+}
+.proto-banner::before { content: "▲"; font-size: 10px; }
+
+.proto-page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: var(--space-3xl) var(--space-2xl) var(--space-6xl);
+}
+.proto-meta {
+  margin-bottom: var(--space-2xl);
+  font-size: var(--font-body-sm-size);
+  color: var(--color-gray-5);
+}
+.proto-meta a { color: var(--color-blue-7); }

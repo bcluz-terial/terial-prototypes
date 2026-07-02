@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terial — Tokens & Components</title>
+  <link rel="stylesheet" href="terial-tokens.css" />
+  <link rel="stylesheet" href="workspace.css" />
+  <style>
+    .swatches { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin: var(--space-lg) 0 var(--space-2xl); }
+    .swatch { width: 96px; }
+    .swatch-chip { height: 48px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-default); }
+    .swatch-name { font-size: var(--font-body-sm-size); color: var(--color-text-secondary); margin-top: var(--space-xs); }
+    .swatch-hex { font-size: 11px; color: var(--color-gray-5); font-family: ui-monospace, monospace; }
+    .demo-row { display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: center; margin: var(--space-lg) 0 var(--space-2xl); }
+    .section-h { margin: var(--space-3xl) 0 0; }
+    .type-sample { margin: var(--space-lg) 0; }
+    .type-label { font-size: var(--font-body-sm-size); color: var(--color-gray-5); }
+    .space-bar { background: var(--color-primary-2); height: 16px; display: inline-block; vertical-align: middle; border-radius: 2px; }
+    code { background: var(--color-gray-2); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="proto-page">
+    <h1 class="t-h3">Tokens &amp; Components</h1>
+    <p class="t-body-md" style="color: var(--color-text-tertiary);">
+      Vendored from the design team's <code>terial-tokens.css</code>
+      (Figma "Product Design reference — George" · canonical:
+      <a href="https://h12312315.github.io/terial-ai/terial-tokens.css">h12312315.github.io/terial-ai</a>).
+      Every prototype in this workspace links the tokens file and builds from these classes.
+    </p>
+
+    <h2 class="t-h4 section-h">Color</h2>
+    <div id="swatches" class="swatches"></div>
+
+    <h2 class="t-h4 section-h">Typography — Inter</h2>
+    <div class="type-sample"><div class="type-label">t-h3 · 30/36 SemiBold</div><div class="t-h3">The quick brown fox</div></div>
+    <div class="type-sample"><div class="type-label">t-h4 · 20/32 SemiBold</div><div class="t-h4">The quick brown fox</div></div>
+    <div class="type-sample"><div class="type-label">t-h5 · 16/24 SemiBold</div><div class="t-h5">The quick brown fox</div></div>
+    <div class="type-sample"><div class="type-label">t-body-lg · 16/20</div><div class="t-body-lg">The quick brown fox jumps over the lazy dog</div></div>
+    <div class="type-sample"><div class="type-label">t-body-md · 14/18</div><div class="t-body-md">The quick brown fox jumps over the lazy dog</div></div>
+    <div class="type-sample"><div class="type-label">t-body-sm · 12/16</div><div class="t-body-sm">The quick brown fox jumps over the lazy dog</div></div>
+
+    <h2 class="t-h4 section-h">Spacing</h2>
+    <div id="spacing" style="margin: var(--space-lg) 0 var(--space-2xl);"></div>
+
+    <h2 class="t-h4 section-h">Buttons</h2>
+    <div class="demo-row">
+      <button class="btn btn-primary">Filled</button>
+      <button class="btn btn-dark">Dark</button>
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-ghost">Ghost</button>
+      <button class="btn btn-primary btn-sm">Small</button>
+    </div>
+
+    <h2 class="t-h4 section-h">Badges</h2>
+    <div class="demo-row">
+      <span class="badge badge-green"><span>Active PM Customer</span></span>
+      <span class="badge badge-blue"><span>Active Warranties</span></span>
+      <span class="badge badge-orange"><span>Pending review</span></span>
+      <span class="badge badge-red"><span>Overdue</span></span>
+      <span class="badge badge-gray"><span>Draft</span></span>
+    </div>
+
+    <h2 class="t-h4 section-h">Form elements</h2>
+    <div class="card card-padded" style="max-width: 420px; margin: var(--space-lg) 0 var(--space-2xl);">
+      <label class="label" for="ds-name">Property name</label>
+      <input class="input" id="ds-name" placeholder="e.g. Sutter FL Test Project" />
+      <div style="height: var(--space-xl);"></div>
+      <div class="demo-row" style="margin: 0;">
+        <label class="switch"><input type="checkbox" checked /><span class="switch-track"></span><span class="switch-thumb"></span></label>
+        <input type="checkbox" class="checkbox" checked />
+        <span class="t-body-md">Switch + checkbox</span>
+      </div>
+    </div>
+
+    <h2 class="t-h4 section-h">Tabs</h2>
+    <div class="tabs" style="margin: var(--space-lg) 0;">
+      <button class="tab is-active">Overview</button>
+      <button class="tab">Properties</button>
+      <button class="tab">Contracts</button>
+      <button class="tab">Settings</button>
+    </div>
+    <div class="tab-box" style="margin-bottom: var(--space-2xl);">
+      <button class="tab-box-item is-active">All</button>
+      <button class="tab-box-item">This month</button>
+      <button class="tab-box-item">This year</button>
+    </div>
+
+    <h2 class="t-h4 section-h">Table</h2>
+    <div class="card" style="margin: var(--space-lg) 0 var(--space-2xl); overflow: hidden;">
+      <table class="table">
+        <thead><tr><th>Name</th><th>Role</th><th>Access</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Pam Asher-Olsker</td><td>Property Manager</td><td>All</td><td><span class="badge badge-orange"><span>Pending</span></span></td></tr>
+          <tr><td>Lila Carter</td><td>Assistant PM</td><td>6 properties</td><td><span class="badge badge-green"><span>Active</span></span></td></tr>
+          <tr><td>Jenna Moore</td><td>Property Manager</td><td>All</td><td><span class="badge badge-green"><span>Active</span></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="t-body-sm" style="color: var(--color-gray-5);">
+      Usage in a prototype: <code>&lt;link rel="stylesheet" href="../terial-tokens.css"&gt;</code> +
+      <code>&lt;link rel="stylesheet" href="../workspace.css"&gt;</code> (for the mandatory
+      <code>.proto-banner</code>). Start from <code>prototypes/_template.html</code>.
+    </p>
+  </div>
+
+  <script>
+    const SCALES = {
+      "primary (yellow)": ["#fff9db","#fff3bf","#ffec99","#ffe066","#ffd43b","#fcc419","#ffca00","#e3b400","#c69e00","#a98800"],
+      "gray": ["#f7f8fb","#eff1f5","#dcdfea","#b9c0d4","#7d89b0","#5d6b98","#4a5578","#272c4c","#212529"],
+      "feedback": ["#00963c","#1c7ed6","#e8590c","#c91a25"]
+    };
+    const sw = document.getElementById("swatches");
+    Object.entries(SCALES).forEach(([name, hexes]) => {
+      hexes.forEach((hex, i) => {
+        const d = document.createElement("div");
+        d.className = "swatch";
+        d.innerHTML = '<div class="swatch-chip" style="background:' + hex + '"></div>' +
+          '<div class="swatch-name">' + name.split(" ")[0] + '-' + i + '</div>' +
+          '<div class="swatch-hex">' + hex + '</div>';
+        sw.appendChild(d);
+      });
+    });
+    const SPACES = [["xxs",2],["xs",4],["sm",8],["lg",12],["xl",16],["2xl",24],["3xl",32],["6xl",48]];
+    const sp = document.getElementById("spacing");
+    SPACES.forEach(([n, px]) => {
+      const r = document.createElement("div");
+      r.style.margin = "6px 0";
+      r.innerHTML = '<code>--space-' + n + '</code> <span class="space-bar" style="width:' + (px * 4) + 'px"></span> <span class="t-body-sm" style="color: var(--color-gray-5);">' + px + 'px</span>';
+      sp.appendChild(r);
+    });
+  </script>
+</body>
+</html>
