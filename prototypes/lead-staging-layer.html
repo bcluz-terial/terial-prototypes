@@ -513,169 +513,194 @@
          modify it beyond nav active states and the page <title>.
          ======================================================== -->
     <div class="app-content">
-
-      <!-- Provenance block: ties the prototype back to the Product
-           Feedback Ledger entry it visualizes. Fill all three. -->
-      <div class="proto-meta">
-        Ledger entry: Leads/company split view (parent company + separate child leads object) (Unclassified · HIGH) ·
-        Sources: 2 accounts ·
-        Drafted: 2026-07-02 by Brian ·
-        <a href="https://app.notion.com/p/36a6517f62da81c68347d7e34c98f6e0" target="_blank" rel="noopener">Ledger row ↗</a>
-      </div>
-
-      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm);">
-        <div>
-          <h1 class="t-h3">Leads</h1>
-          <p class="t-body-md" style="color: var(--color-text-tertiary); max-width: 640px;">
-            "A place for a prospect to live before it's a client." Staged prospects are routed by
-            territory, worked through dispositions, and promoted into the CRM only once qualified
-            and deduped.
-          </p>
-        </div>
-        <div style="display: flex; gap: var(--space-sm);">
-          <button class="btn btn-secondary">Import list</button>
-          <button class="btn btn-primary">+ New Lead</button>
-        </div>
-      </div>
-
-      <!-- ========================================================
-           CONCEPT AREA — replace everything below with the mockup.
-           Build from tokens classes: .card, .table, .badge, .btn,
-           .tabs, .input, .switch. Keep interactions schematic —
-           vanilla JS inline only, no libraries, no build step.
-           ======================================================== -->
-
-      <!-- Lead queue — the staging surface -->
-      <div class="card card-padded" style="margin-top: var(--space-2xl);">
-        <div class="tab-box" style="margin-bottom: var(--space-xl);">
-          <button class="tab-box-item is-active" onclick="queue(this,'newq')">New (14)</button>
-          <button class="tab-box-item" onclick="queue(this,'working')">Working (32)</button>
-          <button class="tab-box-item" onclick="queue(this,'qualified')">Qualified (6)</button>
-          <button class="tab-box-item" onclick="queue(this,'disqualified')">Disqualified</button>
-        </div>
-
-        <table class="table">
-          <thead><tr><th>Lead</th><th>Territory</th><th>Tier</th><th>Source</th><th>Owner</th><th>Disposition</th><th></th></tr></thead>
-          <tbody id="rows"></tbody>
-        </table>
-
-        <p class="t-body-sm" style="color: var(--color-text-tertiary); margin: var(--space-xl) 0 0;">
-          Routing (schematic): new leads auto-assign by territory; tier rules gate who can work
-          what — e.g. top-tier targets route to senior reps, not the BD queue.
-        </p>
-      </div>
-
-      <!-- Promote flow — the dedup gate. Hidden until a Promote button is clicked. -->
-      <div class="card card-padded" id="promoteCard" style="margin-top: var(--space-2xl); display: none; background: var(--color-info-bg); border-color: var(--color-info-fg);">
-        <div class="t-h5" style="margin-bottom: var(--space-sm);">Promote to CRM — dedup check</div>
-        <p class="t-body-md" style="margin: 0 0 var(--space-xl);">
-          Promoting <strong id="promoteName">—</strong>. One possible match found before anything
-          touches the CRM:
-        </p>
-        <table class="table" style="margin-bottom: var(--space-xl);">
-          <thead><tr><th>Possible match</th><th>Why flagged</th><th>Existing record</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Riverton Office Campus LLC</td>
-              <td>Same street address · similar name</td>
-              <td><span class="badge badge-blue"><span>CRM company since 2024</span></span></td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
-          <button class="btn btn-primary" onclick="closePromote()">Merge into existing company</button>
-          <button class="btn btn-secondary" onclick="closePromote()">Create new company + opportunity</button>
-          <button class="btn btn-ghost" onclick="closePromote()">Cancel</button>
-        </div>
-      </div>
-
-      <!-- How it fits — one-line schematic flow -->
-      <div class="card card-padded" style="margin-top: var(--space-2xl);">
-        <div class="t-h5" style="margin-bottom: var(--space-lg);">How it fits</div>
-        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm);">
-          <span class="badge badge-gray"><span>List import / referral / call-in</span></span>
-          <span class="t-body-md" style="color: var(--color-text-tertiary);">→</span>
-          <span class="badge badge-orange"><span>Lead queue (staging)</span></span>
-          <span class="t-body-md" style="color: var(--color-text-tertiary);">→</span>
-          <span class="badge badge-orange"><span>BD dispositions</span></span>
-          <span class="t-body-md" style="color: var(--color-text-tertiary);">→</span>
-          <span class="badge badge-blue"><span>Dedup gate</span></span>
-          <span class="t-body-md" style="color: var(--color-text-tertiary);">→</span>
-          <span class="badge badge-green"><span>CRM company + opportunity</span></span>
-        </div>
-        <p class="t-body-sm" style="color: var(--color-text-tertiary); margin: var(--space-xl) 0 0;">
-          The CRM stays clean: nothing becomes a company until it passes the gate. Disqualified
-          leads keep history in staging instead of polluting the book.
-        </p>
-      </div>
-
-      <!-- Open questions for product — keep this section. It's the
-           point of the artifact: invite reaction, not sign-off. -->
-      <div class="card card-padded" style="margin-top: var(--space-2xl); background: var(--color-info-bg); border-color: var(--color-info-fg);">
-        <div class="t-h5" style="margin-bottom: var(--space-sm);">Open questions</div>
-        <p class="t-body-md" style="margin: 0;">
-          1. Build vs. integrate — native lead object, or sales-engagement tool via the public API
-          with Terial as system of record? ·
-          2. Placement — Leads under CRM as shown, or a top-level area? ·
-          3. Smallest version — flat staged list + dedup gate on promote, with territory/tier
-          routing as a fast follow? ·
-          4. Does import-time dedup gating ship with this or stand alone (it also protects direct
-          CRM imports)?
-        </p>
-      </div>
-
+      <div id="view"></div>
     </div><!-- /.app-content -->
   </main>
 
   <script>
-    // Concept-area behavior only (chrome behavior lives in ../appshell.js)
-    var DATA = {
-      newq: [
-        ["Lakeside Distribution Center", "North", "T3", "List import", "Unassigned", '<span class="badge badge-blue"><span>New</span></span>', ""],
-        ["Harborview Medical Plaza", "East", "T2", "Referral", "Routed: senior rep", '<span class="badge badge-gray"><span>Tier-gated</span></span>', ""],
-        ["Millbrook Industrial Park", "West", "T4", "List import", "Unassigned", '<span class="badge badge-blue"><span>New</span></span>', ""]
-      ],
-      working: [
-        ["Summit Business Park", "North", "T3", "List import", "D. Reyes", '<span class="badge badge-orange"><span>Contacted · 2 touches</span></span>', ""],
-        ["Cedar Ridge Logistics", "West", "T4", "Cold call", "M. Chen", '<span class="badge badge-orange"><span>Callback 7/10</span></span>', ""],
-        ["Fairview Retail Plaza", "East", "T3", "Referral", "D. Reyes", '<span class="badge badge-orange"><span>Left voicemail</span></span>', ""]
-      ],
-      qualified: [
-        ["Riverton Office Campus", "East", "T3", "Referral", "D. Reyes", '<span class="badge badge-green"><span>Qualified</span></span>', '<button class="btn btn-primary btn-sm" onclick="promote(\'Riverton Office Campus\')">Promote to CRM</button>'],
-        ["Stonebridge Corporate Center", "North", "T2", "Event", "Senior rep", '<span class="badge badge-green"><span>Qualified</span></span>', '<button class="btn btn-primary btn-sm" onclick="promote(\'Stonebridge Corporate Center\')">Promote to CRM</button>']
-      ],
-      disqualified: [
-        ["Pinehurst Strip Mall", "West", "T4", "List import", "M. Chen", '<span class="badge badge-red"><span>Disqualified · out of footprint</span></span>', ""]
-      ]
-    };
+    // Concept behavior only (chrome behavior lives in ../appshell.js).
+    // The page IS the Leads screen. One hero click-through:
+    // Leads list -> lead detail -> convert (dedup gate) -> done.
+    // Lead fields map to real Terial fields; Convert creates
+    // Company + Property + Contact + Opportunity (Roof Sections are
+    // outlined afterward in the Roof Section tool, not auto-created).
+    // Free-text Notes maps to the Notes field on each object.
+    var LEADS = [
+      { id:"northgate", name:"Northgate Distribution Center", territory:"East", tier:2,
+        source:"Referral", owner:"A. Torres", status:"Nurturing", dispo:"Working · 3 touches",
+        customerType:"Property Manager", buildingType:"Industrial", interest:"Re-roof", value:"$180,000",
+        contact:["Dana Whitmore","Facilities Director","(330) 555-0140","dwhitmore@example.com"],
+        address:"820 Freight Ave, Akron, OH",
+        notes:"~20-yr TPO, ponding reported on east elevation. Roof sections to be outlined post-convert.",
+        activity:[["Call","Reached facilities lead, follow-up set"],["Note","RFP expected Q4"]] },
+      { id:"lakeside", name:"Lakeside Distribution Center", territory:"North", tier:4,
+        source:"CSV import", owner:"Unassigned", status:"New", dispo:"New · unrouted",
+        customerType:"Owner / Private", buildingType:"Industrial", interest:"Service", value:"—",
+        contact:["Not yet identified","","",""],
+        address:"1400 Depot Rd, Columbus, OH",
+        notes:"Imported list row. Contact and building not yet verified.",
+        activity:[["Import","Staged from CSV import · 07/08"]] },
+      { id:"fairview", name:"Fairview Retail Center", territory:"South", tier:3,
+        source:"Web form", owner:"Unassigned", status:"New", dispo:"New · unrouted",
+        customerType:"Property Manager", buildingType:"Retail", interest:"Repair", value:"—",
+        contact:["Not yet identified","","",""],
+        address:"300 Market St, Dayton, OH",
+        notes:"Inbound web form; leak mentioned in the message.",
+        activity:[["Inbound","Web form submitted · 07/08"]] },
+      { id:"summit", name:"Summit Business Park", territory:"North", tier:3,
+        source:"Trade show", owner:"M. Chen", status:"Nurturing", dispo:"Left voicemail",
+        customerType:"Owner / Private", buildingType:"Office", interest:"Replacement", value:"$120,000",
+        contact:["Priya Anand","Operations Manager","(614) 555-0182","panand@example.com"],
+        address:"50 Summit Way, Columbus, OH",
+        notes:"Met at trade show. ~2005 EPDM, evaluating full replacement.",
+        activity:[["Call","Left voicemail 07/07"],["Email","Intro sent 07/06"]] },
+      { id:"cedar", name:"Cedar Ridge Logistics", territory:"West", tier:4,
+        source:"CSV import", owner:"M. Chen", status:"Prospect", dispo:"Verified · monthly cadence",
+        customerType:"Owner / Private", buildingType:"Industrial", interest:"Service", value:"$40,000",
+        contact:["Marcus Lee","Property Manager","(937) 555-0110","mlee@example.com"],
+        address:"9 Ridge Ct, Toledo, OH",
+        notes:"Verified contact and building. Interested in a service agreement.",
+        activity:[["Call","Reached decision-maker, verified — moved to prospect"]] },
+      { id:"harborview", name:"Harborview Medical Plaza", territory:"East", tier:3,
+        source:"Referral", owner:"D. Reyes", status:"Prospect", dispo:"Verified · ready to convert",
+        customerType:"National Account", buildingType:"Healthcare", interest:"Re-roof", value:"$260,000",
+        contact:["Elena Ruiz","Director of Facilities","(216) 555-0199","eruiz@example.com"],
+        address:"200 Harbor Blvd, Cleveland, OH",
+        notes:"Decision-maker confirmed, budget in place. Walkthrough booked 7/12.",
+        activity:[["Call","Decision-maker confirmed, budget in place"],["Meeting","Walkthrough booked 7/12"]] },
+      { id:"pinehurst", name:"Pinehurst Strip Mall", territory:"West", tier:4,
+        source:"CSV import", owner:"A. Torres", status:"Disqualified", dispo:"Demolished — flagged at import",
+        customerType:"—", buildingType:"Retail", interest:"—", value:"—",
+        contact:["—","","",""],
+        address:"77 Pine St, Canton, OH",
+        notes:"Import flagged: building demolished 2025. Bad lead.",
+        activity:[["Flag","Import flagged: building demolished 2025"]] }
+    ];
 
-    function render(key) {
-      var tbody = document.getElementById("rows");
-      tbody.innerHTML = DATA[key].map(function (r) {
-        return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + "</td><td>" +
-          r[3] + "</td><td>" + r[4] + "</td><td>" + r[5] + "</td><td>" + r[6] + "</td></tr>";
+    var STATUSES = ["New","Nurturing","Prospect","Disqualified"];
+    var filter = "all";
+
+    function byId(id){ return LEADS.filter(function(l){return l.id===id;})[0]; }
+    function badge(c,t){ return '<span class="badge '+c+'"><span>'+t+'</span></span>'; }
+    function statusBadge(s){
+      var m={New:"badge-blue",Nurturing:"badge-orange",Prospect:"badge-green",Disqualified:"badge-red"};
+      return badge(m[s]||"badge-gray", s);
+    }
+    function view(){ return document.getElementById("view"); }
+    function scrollTop(){ var c=document.querySelector(".app-content"); if(c) c.scrollTop=0; }
+    function header(title, actions){
+      return '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-sm);">'+
+        '<h1 class="t-h3">'+title+'</h1><div style="display:flex;gap:var(--space-sm);">'+(actions||'')+'</div></div>';
+    }
+    function back(label, onclick){
+      return '<a class="t-body-sm" onclick="'+onclick+'" style="cursor:pointer;color:var(--color-text-tertiary);">‹ '+label+'</a>';
+    }
+    function label(t){
+      return '<div class="t-body-sm" style="text-transform:uppercase;letter-spacing:.04em;color:var(--color-text-tertiary);margin-bottom:var(--space-sm);">'+t+'</div>';
+    }
+    function fieldRows(pairs){
+      return pairs.map(function(r){
+        return '<div style="display:flex;justify-content:space-between;gap:var(--space-lg);padding:var(--space-xs) 0;border-bottom:1px solid var(--color-border);">'+
+          '<span class="t-body-sm" style="color:var(--color-text-tertiary);">'+r[0]+'</span>'+
+          '<span class="t-body-sm" style="text-align:right;">'+(r[1]||"—")+'</span></div>';
       }).join("");
     }
+    function card(title, inner){ return '<div class="card card-padded" style="margin-bottom:var(--space-lg);">'+label(title)+inner+'</div>'; }
 
-    function queue(el, key) {
-      el.parentElement.querySelectorAll(".tab-box-item").forEach(function (t) { t.classList.remove("is-active"); });
-      el.classList.add("is-active");
-      closePromote();
-      render(key);
+    /* ---- Leads list (home screen) ---- */
+    function renderList(){
+      var counts={}; LEADS.forEach(function(l){counts[l.status]=(counts[l.status]||0)+1;});
+      var tabs=[["all","All",LEADS.length]].concat(STATUSES.map(function(s){return [s,s,counts[s]||0];}));
+      var tabHtml=tabs.map(function(t){
+        return '<button class="tab-box-item'+(filter===t[0]?' is-active':'')+'" onclick="setFilter(\''+t[0]+'\')">'+t[1]+' ('+t[2]+')</button>';
+      }).join("");
+      var rows=LEADS.filter(function(l){return filter==="all"||l.status===filter;}).map(function(l){
+        return '<tr style="cursor:pointer;" onclick="showDetail(\''+l.id+'\')">'+
+          '<td style="font-weight:600;">'+l.name+'</td><td>'+l.territory+'</td>'+
+          '<td>T'+l.tier+'</td><td>'+l.source+'</td><td>'+l.owner+'</td>'+
+          '<td>'+statusBadge(l.status)+'</td><td style="text-align:right;color:var(--color-text-tertiary);">›</td></tr>';
+      }).join("");
+      view().innerHTML=
+        header('Leads','<button class="btn btn-secondary" onclick="showImport()">Import list</button>'+
+                       '<button class="btn btn-primary" onclick="showImport()">+ New Lead</button>')+
+        '<div class="card card-padded" style="margin-top:var(--space-xl);">'+
+          '<div class="tab-box" style="margin-bottom:var(--space-lg);">'+tabHtml+'</div>'+
+          '<table class="table"><thead><tr><th>Lead</th><th>Territory</th><th>Tier</th><th>Source</th><th>Owner</th><th>Status</th><th></th></tr></thead>'+
+          '<tbody>'+rows+'</tbody></table></div>';
+      scrollTop();
+    }
+    function setFilter(f){ filter=f; renderList(); }
+
+    /* ---- Lead detail (summary left, activity right) ---- */
+    function showDetail(id){
+      var l=byId(id);
+      var leadCard=card("Lead", fieldRows([["Status",l.status],["Territory",l.territory],["Tier","T"+l.tier],["Source",l.source],["Owner",l.owner],["Interest",l.interest],["Est. value",l.value]]));
+      var cpCard=card("Company & property", fieldRows([["Customer type",l.customerType],["Address",l.address],["Building type",l.buildingType]]));
+      var contactCard=card("Contact", fieldRows([["Name",l.contact[0]],["Role",l.contact[1]],["Phone",l.contact[2]],["Email",l.contact[3]]]));
+      var notesCard=card("Notes",'<div class="t-body-sm">'+l.notes+'</div>');
+      var activity=card("Activity", l.activity.map(function(a){
+        return '<div style="padding:var(--space-sm) 0;border-bottom:1px solid var(--color-border);">'+badge("badge-gray",a[0])+' <span class="t-body-sm">'+a[1]+'</span></div>';
+      }).join(""));
+      view().innerHTML=
+        back("Leads","renderList()")+
+        '<div style="margin-top:var(--space-sm);">'+header(l.name,'<button class="btn btn-primary" onclick="showConvert(\''+l.id+'\')">Convert to CRM</button>')+'</div>'+
+        '<div style="display:flex;gap:var(--space-sm);margin-top:var(--space-xs);">'+statusBadge(l.status)+badge("badge-gray",l.territory)+badge("badge-gray","T"+l.tier)+'</div>'+
+        '<div style="display:flex;gap:var(--space-lg);margin-top:var(--space-xl);flex-wrap:wrap;">'+
+          '<div style="flex:0 0 340px;min-width:280px;">'+leadCard+cpCard+contactCard+notesCard+'</div>'+
+          '<div style="flex:1 1 320px;min-width:280px;">'+activity+'</div>'+
+        '</div>';
+      scrollTop();
     }
 
-    function promote(name) {
-      document.getElementById("promoteName").textContent = name;
-      var card = document.getElementById("promoteCard");
-      card.style.display = "block";
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
+    /* ---- Convert (dedup gate) ---- */
+    function showConvert(id){
+      var l=byId(id);
+      var hasContact = l.contact[0] && l.contact[0]!=="—" && l.contact[0]!=="Not yet identified";
+      var creates=["Company","Property — "+l.name,"Contact"+(hasContact?" — "+l.contact[0]:""),"Opportunity"];
+      var createList=creates.map(function(c){return '<div class="t-body-sm" style="padding:var(--space-xs) 0;">'+badge("badge-green","new")+' '+c+'</div>';}).join("");
+      view().innerHTML=
+        back(l.name,"showDetail('"+l.id+"')")+
+        '<div style="margin-top:var(--space-sm);">'+header("Convert to CRM","")+'</div>'+
+        '<div class="card card-padded" style="margin-top:var(--space-xl);max-width:640px;">'+
+          label("Dedup check")+
+          '<div style="display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-bottom:var(--space-lg);">'+badge("badge-green","No exact match")+badge("badge-orange","1 similar name · review")+'</div>'+
+          label("Creates")+createList+
+          '<div class="t-body-sm" style="color:var(--color-text-tertiary);margin-top:var(--space-md);">Roof sections are outlined next in the Roof Section tool.</div>'+
+          '<div style="display:flex;gap:var(--space-sm);margin-top:var(--space-xl);">'+
+            '<button class="btn btn-primary" onclick="showDone(\''+l.id+'\')">Convert</button>'+
+            '<button class="btn btn-secondary" onclick="showDetail(\''+l.id+'\')">Cancel</button></div></div>';
+      scrollTop();
     }
 
-    function closePromote() {
-      document.getElementById("promoteCard").style.display = "none";
+    /* ---- Done ---- */
+    function showDone(id){
+      var l=byId(id);
+      view().innerHTML=
+        '<div class="card card-padded" style="margin-top:var(--space-2xl);max-width:560px;background:var(--color-info-bg);border-color:var(--color-info-fg);">'+
+          '<div class="t-h5" style="margin-bottom:var(--space-sm);">'+l.name+' converted</div>'+
+          '<p class="t-body-md" style="margin:0 0 var(--space-lg);color:var(--color-text-tertiary);">Now live in the CRM. Company, property, contact, and opportunity created and linked.</p>'+
+          '<button class="btn btn-primary" onclick="renderList()">Back to Leads</button></div>';
+      scrollTop();
     }
 
-    render("newq");
+    /* ---- Import (secondary) ---- */
+    function showImport(){
+      view().innerHTML=
+        back("Leads","renderList()")+
+        '<div style="margin-top:var(--space-sm);">'+header("Import list","")+'</div>'+
+        '<div class="card card-padded" style="margin-top:var(--space-xl);max-width:640px;">'+
+          label("40 rows · CSV import")+
+          '<div style="display:flex;flex-direction:column;gap:var(--space-sm);margin-bottom:var(--space-lg);">'+
+            '<div class="t-body-sm">'+badge("badge-green","34")+' new · staged as leads</div>'+
+            '<div class="t-body-sm">'+badge("badge-orange","4")+' possible duplicates · held for review</div>'+
+            '<div class="t-body-sm">'+badge("badge-red","2")+' flagged · demolished or bad address</div></div>'+
+          '<div style="display:flex;gap:var(--space-sm);">'+
+            '<button class="btn btn-primary" onclick="renderList()">Stage 34 · review 4</button>'+
+            '<button class="btn btn-secondary" onclick="renderList()">Cancel</button></div></div>';
+      scrollTop();
+    }
+
+    renderList();
   </script>
 </body>
 </html>
